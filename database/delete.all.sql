@@ -1,11 +1,25 @@
 SET client_min_messages TO WARNING; 
 
 DROP FUNCTION IF EXISTS fn_tooaegadeNimekiri (int) CASCADE;
+DROP FUNCTION IF EXISTS fn_tooaegadeKoguNimekiri (int) CASCADE;
+DROP FUNCTION IF EXISTS fn_tooaegadeNimekiriInternal (int, int[]) CASCADE;
+DROP FUNCTION IF EXISTS fn_lisaTooaeg(int, timestamp without time zone,  timestamp without time zone, varchar) CASCADE;
+DROP FUNCTION IF EXISTS fn_saabMuutaTooaeg (int) CASCADE;
+DROP FUNCTION IF EXISTS fn_kinnitaTooaeg (int) CASCADE;
+DROP FUNCTION IF EXISTS fn_uuendaTooaeg (int, timestamp without time zone, timestamp without time zone, varchar) CASCADE;
+DROP FUNCTION IF EXISTS fn_kustutaTooaeg (int) CASCADE;
+
+DROP FUNCTION IF EXISTS fn_valideeriKasutaja (varchar, varchar) CASCADE;
 DROP FUNCTION IF EXISTS fn_kasutajaProjektid (int) CASCADE;
+
 DROP FUNCTION IF EXISTS fn_checkkood(integer) CASCADE;
 DROP FUNCTION IF EXISTS fn_intToDigits(integer) CASCADE;
 DROP FUNCTION IF EXISTS fn_calculateCheckSum(integer[], integer[]) CASCADE;
-DROP FUNCTION IF EXISTS fn_lisaTooaeg(int, timestamp without time zone,  timestamp without time zone, varchar);
+
+
+
+
+
 
 DROP VIEW IF EXISTS kliendi_nimekiri CASCADE;
 DROP VIEW IF EXISTS tootajate_nimekiri CASCADE;

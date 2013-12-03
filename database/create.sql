@@ -13,7 +13,7 @@ INSERT INTO Isik (Isik_ID, Eesnimi, Perekonnanimi) VALUES (currval('osapool_osap
 INSERT INTO Tootaja (tootaja_id, Kasutajanimi, Parool) VALUES (currval('osapool_osapool_id_seq'), 'a', 'b');
 
 INSERT INTO Osapool (Aadress, Telefon, Email) VALUES ('Aadress 1', '12345', 'andrei.reinus@gmail.com');
-INSERT INTO Organisatsioon (Organisatsioon_ID, Registrikood, Nimi) VALUES (currval('osapool_osapool_id_seq'), 12301712, 'Oü Codecat');
+INSERT INTO Organisatsioon (Organisatsioon_ID, Registrikood, Nimi) VALUES (currval('osapool_osapool_id_seq'), 12301712, 'OÜ Codecat');
 INSERT INTO Klient (tootaja_id) VALUES (1);
 INSERT INTO Ariklient VALUES (currval('klient_klient_id_seq'),currval('osapool_osapool_id_seq'));
 INSERT INTO Projekt (klient_id, Projekti_seisund_ID, Nimi) VALUES (currval('klient_klient_id_seq'), 1, 'Suur projekt');

@@ -1,3 +1,26 @@
+SET CLIENT_ENCODING TO 'UTF8';
+
+CREATE OR REPLACE FUNCTION fn_saabMuutaTooaeg (
+	tooaeg.tooaeg_id%TYPE
+) RETURNS boolean
+AS $$
+DECLARE
+	seisund int;
+BEGIN
+	SELECT tooaeg.tooaja_seisund_id INTO seisund FROM tooaeg WHERE tooaeg_id = $1;
+
+	IF NOT FOUND THEN
+		RAISE EXCEPTION 'Tooaega ei leitud!';
+ 	END IF;
+
+ 	IF seisund <> 1 AND seisund <> 5 THEN
+		RAISE EXCEPTION 'Ainult Avatud ja Parandamiseks seisundis tööaegu saab muuta/kustutada!';
+ 	END IF;
+	
+	RETURN true;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION fn_lisaTooaeg (
 	tooaeg.projekti_liige_id%TYPE
 	, tooaeg.algus%TYPE
@@ -23,6 +46,7 @@ CREATE OR REPLACE FUNCTION fn_uuendaTooaeg (
 ) RETURNS boolean
 AS $$
 BEGIN
+	PERFORM fn_saabMuutaTooaeg($1);
 	UPDATE 
 		tooaeg
 	SET
@@ -35,15 +59,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION fn_kinnitaTooaeg (
+	tooaeg.tooaeg_id%TYPE
+) RETURNS boolean
+AS $$
+BEGIN
+	PERFORM fn_saabMuutaTooaeg($1);
+	
+	UPDATE tooaeg SET tooaeg_seisund_id = 3 WHERE tooaeg.tooaeg_id = $1;
+	
+	return true;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION fn_kustutaTooaeg (
 	tooaeg.tooaeg_id%TYPE
 ) RETURNS boolean
 AS $$
 BEGIN
-	DELETE FROM
-		tooaeg
-	WHERE
-		tooaeg.tooaeg_id = $1;
+	PERFORM fn_saabMuutaTooaeg($1);
+	
+	DELETE FROM tooaeg
+ 	WHERE tooaeg.tooaeg_id = $1;
+ 	
 	RETURN true;
 END;
 $$ LANGUAGE plpgsql;
@@ -87,7 +125,10 @@ RETURNS TABLE(
 		p.kliendi_nimi, p.projekti_nimi
 $$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION fn_tooaegadeNimekiri (user_id int)
+
+
+
+CREATE OR REPLACE FUNCTION fn_tooaegadeNimekiriInternal (user_id int, lubatud_seisundid int[])
 RETURNS TABLE(
 		tooaeg_id Tooaeg.Tooaeg_Id%TYPE
 		, seisund_nimetus Tooaja_Seisund.Nimetus%TYPE
@@ -112,18 +153,35 @@ RETURNS TABLE(
 		JOIN Tooaja_Seisund ts ON (ts.Tooaja_Seisund_ID = t.Tooaja_Seisund_ID)
 	WHERE
 		pl.tootaja_id = $1
+		AND ts.tooaja_seisund_id = ANY(lubatud_seisundid);
 $$ LANGUAGE SQL;
 
--- $1 tooaeg_id
--- $2 user_id
-CREATE OR REPLACE FUNCTION fn_kasutajaTooaeg(int, int)
-RETURNS Tooaeg AS $$
-	select 
-		t.* 
-	from 
-		Tooaeg t 
-		JOIN Projekti_Liige pl ON (pl.Projekti_Liige_ID = t.Projekti_Liige_ID)
-	WHERE 
-		t.Tooaeg_ID = $1
-		AND pl.tootaja_id = $2;
+
+
+
+CREATE OR REPLACE FUNCTION fn_tooaegadeNimekiri (user_id int)
+RETURNS TABLE(
+		tooaeg_id Tooaeg.Tooaeg_Id%TYPE
+		, seisund_nimetus Tooaja_Seisund.Nimetus%TYPE
+		, algus Tooaeg.Algus%TYPE
+		, lopp Tooaeg.Lopp%TYPE
+		, kirjeldus Tooaeg.Kirjeldus%TYPE
+		, projekti_nimi projekti_nimekiri.projekti_nimi%TYPE
+		, kliendi_nimi projekti_nimekiri.kliendi_nimi%TYPE
+) AS $$
+	SELECT * FROM fn_tooaegadeNimekiriInternal(user_id, '{1,5}');
+$$ LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION fn_tooaegadeKoguNimekiri (user_id int)
+RETURNS TABLE(
+		tooaeg_id Tooaeg.Tooaeg_Id%TYPE
+		, seisund_nimetus Tooaja_Seisund.Nimetus%TYPE
+		, algus Tooaeg.Algus%TYPE
+		, lopp Tooaeg.Lopp%TYPE
+		, kirjeldus Tooaeg.Kirjeldus%TYPE
+		, projekti_nimi projekti_nimekiri.projekti_nimi%TYPE
+		, kliendi_nimi projekti_nimekiri.kliendi_nimi%TYPE
+) AS $$
+	SELECT * FROM fn_tooaegadeNimekiriInternal(user_id, '{1,2,3,4,5}');
 $$ LANGUAGE SQL;

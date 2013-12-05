@@ -1,0 +1,17 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Kustuta Tööaeg";
+}
+
+<h3>Oled kindel, et soovid kustutada?</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("id", Model)
+    @Html.Hidden("confirm", true)
+    <div class="form-actions no-color">
+        <input type="submit" value="Kustuta" class="btn btn-primary" /> |
+        @Html.ActionLink("Tagasi", "Index", null, new { @class = "btn btn-default" })
+    </div>
+}

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Model.Views.Tooaeg>
+
+@Html.ActionLink("Aktiivsed", "Index", new { id = "active" }, new { @class = "btn btn-default" })
+@Html.ActionLink("Kõik", "Index", new { id = "all" }, new { @class = "btn btn-default" })
+@Html.ActionLink("Lisa uus", "Create", null, new { @class = "btn btn-primary pull-right" })
+
+<table class="table table-striped" style="margin-top: 10px;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.kliendi_nimi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projekti_nimi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.algus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lopp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.kirjeldus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.seisund_nimetus)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.kliendi_nimi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projekti_nimi)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.algus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lopp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.kirjeldus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.seisund_nimetus)
+            </td>
+            <td>
+                @Html.ActionLink("Muuda", "Edit", new { id = item.tooaeg_id }) |
+                @Html.ActionLink("Kustuta", "Delete", new { id = item.tooaeg_id })
+            </td>
+        </tr>
+    }
+
+</table>

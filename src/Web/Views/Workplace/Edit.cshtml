@@ -1,0 +1,55 @@
+﻿@model Model.Views.TooaegEdit
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.TooaegId)
+        @Html.HiddenFor(model => model.ProjektiNimi)
+
+        @foreach (var message in Model.Messages)
+        {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                @message.Text
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProjektiNimi, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p class="form-control-static">@Html.DisplayFor(model => model.ProjektiNimi)</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Algus, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Algus, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lopp, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Lopp, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Kirjeldus, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Kirjeldus, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Salvesta" class="btn btn-primary" /> |
+                @Html.ActionLink("Saada kinnitamiseks", "Confirm", new { id = Model.TooaegId }, new { @class = "btn btn-default" }) |
+                @Html.ActionLink("Tagasi", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}

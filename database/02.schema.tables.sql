@@ -177,8 +177,8 @@ CREATE TABLE tooaeg
 	tooaeg_id serial not null,
 	projekti_liige_id integer not null,
 	tooaja_seisund_id d_klassifikaatori_id DEFAULT 1, -- Avatud
-	algus timestamp without time zone not null,
-	lopp timestamp without time zone not null,
+	algus timestamp(0) not null DEFAULT localtimestamp(0),
+	lopp timestamp(0) not null DEFAULT localtimestamp(0),
 	kirjeldus varchar(1000) not null,
 
 	CONSTRAINT PK_Tooaeg PRIMARY KEY (tooaeg_id),

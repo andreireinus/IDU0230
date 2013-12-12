@@ -1,5 +1,10 @@
 SET client_min_messages TO WARNING; 
 
+DROP USER IF EXISTS pmv_jurist;
+DROP GROUP IF EXISTS pmv_tootajad;
+
+
+/*
 DROP FUNCTION IF EXISTS fn_tooaegadeNimekiri (int) CASCADE;
 DROP FUNCTION IF EXISTS fn_tooaegadeKoguNimekiri (int) CASCADE;
 DROP FUNCTION IF EXISTS fn_tooaegadeNimekiriInternal (int, int[]) CASCADE;
@@ -49,3 +54,4 @@ DROP DOMAIN IF EXISTS d_nimi;
 DROP DOMAIN IF EXISTS d_nimetus;
 DROP DOMAIN IF EXISTS d_kirjeldus;
 DROP DOMAIN IF EXISTS d_klassifikaatori_id;
+*/

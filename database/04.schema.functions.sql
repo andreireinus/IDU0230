@@ -1,4 +1,10 @@
+SET client_min_messages TO WARNING; 
 SET CLIENT_ENCODING TO 'UTF8';
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+CREATE OR REPLACE FUNCTION sha1(text) returns text AS $$
+	SELECT encode(digest($1::bytea, 'sha1'), 'hex')
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fn_saabMuutaTooaeg (
 	tooaeg.tooaeg_id%TYPE
@@ -19,7 +25,7 @@ BEGIN
 	
 	RETURN true;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION fn_lisaTooaeg (
 	tooaeg.projekti_liige_id%TYPE
@@ -36,14 +42,14 @@ BEGIN
 	
 	RETURN currval('tooaeg_tooaeg_id_seq');
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION fn_uuendaTooaeg (
 	tooaeg.tooaeg_id%TYPE
 	, tooaeg.algus%TYPE
 	, tooaeg.lopp%TYPE
 	, tooaeg.kirjeldus%TYPE
-) RETURNS boolean
+) RETURNS void
 AS $$
 BEGIN
 	PERFORM fn_saabMuutaTooaeg($1);
@@ -55,20 +61,17 @@ BEGIN
 		, kirjeldus = $4
 	WHERE
 		tooaeg_id = $1;
-	return true;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION fn_kinnitaTooaeg (
 	tooaeg.tooaeg_id%TYPE
-) RETURNS boolean
+) RETURNS void
 AS $$
 BEGIN
 	PERFORM fn_saabMuutaTooaeg($1);
 	
-	UPDATE tooaeg SET tooaeg_seisund_id = 3 WHERE tooaeg.tooaeg_id = $1;
-	
-	return true;
+	UPDATE tooaeg SET tooaja_seisund_id = 2 WHERE tooaeg_id = $1;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -124,8 +127,6 @@ RETURNS TABLE(
 	ORDER BY
 		p.kliendi_nimi, p.projekti_nimi
 $$ LANGUAGE SQL;
-
-
 
 
 CREATE OR REPLACE FUNCTION fn_tooaegadeNimekiriInternal (user_id int, lubatud_seisundid int[])

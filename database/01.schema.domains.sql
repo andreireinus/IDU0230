@@ -8,7 +8,6 @@ DECLARE
 	digits int[];
 	expectedSum int;
 	actualSum int;
-
 BEGIN
 	mods1 := ARRAY[ 1, 2, 3, 4, 5, 6, 7 ];
 	mods2 := ARRAY[ 3, 4, 5, 6, 7, 8, 9 ];
@@ -62,9 +61,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
---- ------------
---- Domeenid ---
---- ------------
+--- ---------- ---
+---  Domeenid  ---
+--- -=-------- ---
 CREATE DOMAIN d_klassifikaatori_id AS smallint
   NOT NULL
   CONSTRAINT Id_peab_olema_nullist_suurem CHECK (VALUE > 0);

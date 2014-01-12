@@ -35,12 +35,14 @@ namespace Web.Controllers
                 {
                     var user_id = _service.Auth(cred.Username, cred.Password);
 
-                    if (user_id != -1)
+                    if (user_id == -1)
                     {
-                        Session.Add("user_id", user_id);
-                        Session.Add("user_name", _service.GetUserName(user_id));
-                        return RedirectToAction("", "");
+                        throw new Exception("Kasutajat ei tuvastatud");
                     }
+
+                    Session.Add("user_id", user_id);
+                    Session.Add("user_name", _service.GetUserName(user_id));
+                    return RedirectToAction("", "");
                 }
                 catch (Exception e)
                 {

@@ -131,9 +131,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Content\Code\ControllerBase.cs" />
-    <Compile Include="Content\Code\DAuthorizeAttribute.cs" />
-    <Compile Include="Content\Code\WebCodeHelpers.cs" />
+    <Compile Include="Code\ControllerBase.cs" />
+    <Compile Include="Code\DAuthorizeAttribute.cs" />
+    <Compile Include="Code\WebCodeHelpers.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\WorkplaceController.cs" />

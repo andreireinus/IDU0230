@@ -25,7 +25,16 @@ GRANT USAGE ON SCHEMA public TO pmv_jurist;
 
 -- Tabelid
 GRANT SELECT ON
-	tootaja, ariklient, eraklient,projekt, tooaeg
+	tootaja, 
+	isik,
+	ariklient, 
+	eraklient,
+	organisatsioon,
+	isik,
+	osapool,
+	projekt, 
+	projekti_liige,
+	tooaeg
 TO pmv_jurist;
 
 -- Funktsioonide õigused

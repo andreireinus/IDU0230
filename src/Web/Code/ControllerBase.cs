@@ -33,7 +33,7 @@ namespace Web.Code
 
         protected void AddErrorMessage(Exception e)
         {
-            AddErrorMessage(e.ToString());
+            AddErrorMessage(e.Message);
 
             if (e.InnerException != null)
             {

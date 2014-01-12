@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW kliendi_nimekiri AS SELECT
+CREATE OR REPLACE VIEW kliendi_nimekiri WITH (security_barrier) AS SELECT
 	k.klient_id
 	, CASE WHEN org.organisatsioon_id IS NULL THEN 'Eraklient' ELSE 'Äriklient' END AS kliendi_liik
 	, CASE WHEN e_isik.isik_id IS NULL
@@ -20,7 +20,7 @@ FROM
 
 ORDER BY kliendi_nimi;
 
-CREATE OR REPLACE VIEW projekti_nimekiri AS
+CREATE OR REPLACE VIEW projekti_nimekiri WITH (security_barrier) AS
 SELECT
 	p.projekt_id
 	, p.projekti_seisund_id
@@ -35,10 +35,10 @@ FROM
 	JOIN projekti_seisund ps ON (ps.projekti_seisund_id = p.projekti_seisund_id)
 ORDER BY projekti_nimi;
 
-CREATE OR REPLACE VIEW tootajate_nimekiri AS
+CREATE OR REPLACE VIEW tootajate_nimekiri WITH (security_barrier) AS
 select
-  tootaja_id
-  , eesnimi || ' ' || perekonnanimi AS tootaja_nimi
+  t.tootaja_id
+  , i.eesnimi || ' ' || i.perekonnanimi AS tootaja_nimi
 from
   tootaja t
   join isik i on (t.tootaja_id = i.isik_id)

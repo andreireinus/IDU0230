@@ -9,33 +9,39 @@ using System.Threading.Tasks;
 
 namespace Model.Views
 {
+    public class TooaegList
+    {
+        public bool ShowActiveOnly { get; set; }
+        public List<Tooaeg> Tooajad { get; set; }
+    }
+
     public class Tooaeg
     {
         [Column("tooaeg_id")]
         public int tooaeg_id { get; set; }
-        
+
         [Column("seisund_nimetus")]
         [DisplayName("Seisund")]
         public string seisund_nimetus { get; set; }
-        
+
         [Column("algus")]
         [DisplayName("Algus")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         public DateTime algus { get; set; }
-        
+
         [Column("lopp")]
         [DisplayName("Lõpp")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy HH:mm}")]
         public DateTime lopp { get; set; }
-        
+
         [Column("kirjeldus")]
         [DisplayName("Kirjeldus")]
         public string kirjeldus { get; set; }
-        
+
         [Column("projekti_nimi")]
         [DisplayName("Projekt")]
         public string projekti_nimi { get; set; }
-        
+
         [Column("kliendi_nimi")]
         [DisplayName("Klient")]
         public string kliendi_nimi { get; set; }

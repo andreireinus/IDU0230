@@ -15,14 +15,22 @@ namespace Web.Controllers
         [DAuthorize]
         public ActionResult Index(string id)
         {
+            var model = new TooaegList();
+            model.ShowActiveOnly = true;
+
             SetTitle("Tööaegade nimekiri");
 
             if (id == "all")
             {
-                return View(_db.GetTooaegadeKoguNimekiri(UserId));
+                model.ShowActiveOnly = false;
+                model.Tooajad = _db.GetTooaegadeKoguNimekiri(UserId);
             }
-
-            return View(_db.GetTooaegadeNimekiri(UserId));
+            else
+            {
+                model.Tooajad = _db.GetTooaegadeNimekiri(UserId);
+            }
+            
+            return View(model);
         }
 
         [DAuthorize]
@@ -31,6 +39,8 @@ namespace Web.Controllers
             try
             {
                 _db.KinnitaTooaeg(id);
+
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -70,7 +80,7 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
             {
                 ModelState.PushToSession(AddErrorMessage);
-                
+
                 return View(model);
             }
 

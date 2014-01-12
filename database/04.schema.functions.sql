@@ -25,7 +25,7 @@ BEGIN
 	
 	RETURN true;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_lisaTooaeg (
 	tooaeg.projekti_liige_id%TYPE
@@ -42,7 +42,7 @@ BEGIN
 	
 	RETURN currval('tooaeg_tooaeg_id_seq');
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_uuendaTooaeg (
 	tooaeg.tooaeg_id%TYPE
@@ -62,7 +62,7 @@ BEGIN
 	WHERE
 		tooaeg_id = $1;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_kinnitaTooaeg (
 	tooaeg.tooaeg_id%TYPE
@@ -73,7 +73,7 @@ BEGIN
 	
 	UPDATE tooaeg SET tooaja_seisund_id = 2 WHERE tooaeg_id = $1;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_kustutaTooaeg (
 	tooaeg.tooaeg_id%TYPE
@@ -87,7 +87,7 @@ BEGIN
  	
 	RETURN true;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_valideeriKasutaja (
 	Tootaja.Kasutajanimi%TYPE
@@ -105,7 +105,7 @@ BEGIN
 	
 	RETURN nr;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
 CREATE OR REPLACE FUNCTION fn_kasutajaProjektid (int)
 RETURNS TABLE(
@@ -126,7 +126,7 @@ RETURNS TABLE(
 		pl.Tootaja_id = $1
 	ORDER BY
 		p.kliendi_nimi, p.projekti_nimi
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL SECURITY DEFINER SET search_path = public, pg_temp;
 
 
 CREATE OR REPLACE FUNCTION fn_tooaegadeNimekiriInternal (user_id int, lubatud_seisundid int[])
@@ -155,7 +155,7 @@ RETURNS TABLE(
 	WHERE
 		pl.tootaja_id = $1
 		AND ts.tooaja_seisund_id = ANY(lubatud_seisundid);
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL SECURITY DEFINER SET search_path = public, pg_temp;
 
 
 
@@ -171,7 +171,7 @@ RETURNS TABLE(
 		, kliendi_nimi projekti_nimekiri.kliendi_nimi%TYPE
 ) AS $$
 	SELECT * FROM fn_tooaegadeNimekiriInternal(user_id, '{1,5}');
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL SECURITY DEFINER SET search_path = public, pg_temp;
 
 
 CREATE OR REPLACE FUNCTION fn_tooaegadeKoguNimekiri (user_id int)
@@ -185,4 +185,4 @@ RETURNS TABLE(
 		, kliendi_nimi projekti_nimekiri.kliendi_nimi%TYPE
 ) AS $$
 	SELECT * FROM fn_tooaegadeNimekiriInternal(user_id, '{1,2,3,4,5}');
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL SECURITY DEFINER SET search_path = public, pg_temp;

@@ -12,7 +12,7 @@ namespace Web.Logic
         {
             using (var db = new DataContext())
             {
-                return db.Auth(username, password);
+                return db.Auth(username, CryptService.CalculateSHA1(password));
             }
         }
 

@@ -1,33 +1,40 @@
-﻿@model IEnumerable<Model.Views.Tooaeg>
+﻿@model Model.Views.TooaegList
 
-@Html.ActionLink("Aktiivsed", "Index", new { id = "active" }, new { @class = "btn btn-default" })
-@Html.ActionLink("Kõik", "Index", new { id = "all" }, new { @class = "btn btn-default" })
+@{
+    var cssActive = "btn " + (Model.ShowActiveOnly ? "btn-primary" : "btn-default");
+    var cssAll = "btn " + (Model.ShowActiveOnly ? "btn-default" : "btn-primary");
+    var headerMetadata = Model.Tooajad.FirstOrDefault();
+}
+
+@Html.ActionLink("Aktiivsed", "Index", new { id = "active" }, new { @class = cssActive })
+@Html.ActionLink("Kõik", "Index", new { id = "all" }, new { @class = cssAll })
 @Html.ActionLink("Lisa uus", "Create", null, new { @class = "btn btn-primary pull-right" })
+
 
 <table class="table table-striped" style="margin-top: 10px;">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.kliendi_nimi)
+            @Html.DisplayNameFor(model => headerMetadata.kliendi_nimi)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.projekti_nimi)
+            @Html.DisplayNameFor(model => headerMetadata.projekti_nimi)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.algus)
+            @Html.DisplayNameFor(model => headerMetadata.algus)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lopp)
+            @Html.DisplayNameFor(model => headerMetadata.lopp)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.kirjeldus)
+            @Html.DisplayNameFor(model => headerMetadata.kirjeldus)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.seisund_nimetus)
+            @Html.DisplayNameFor(model => headerMetadata.seisund_nimetus)
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Tooajad)
     {
         <tr>
             <td>

@@ -131,15 +131,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Code\ControllerBase.cs" />
-    <Compile Include="Code\DAuthorizeAttribute.cs" />
-    <Compile Include="Code\WebCodeHelpers.cs" />
+    <Compile Include="Content\Code\ControllerBase.cs" />
+    <Compile Include="Content\Code\DAuthorizeAttribute.cs" />
+    <Compile Include="Content\Code\WebCodeHelpers.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\WorkplaceController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\CryptService.cs" />
     <Compile Include="Logic\UtilService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -155,6 +156,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Properties\PublishProfiles\IDU0230.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -170,6 +172,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />

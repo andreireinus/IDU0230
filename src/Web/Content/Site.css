@@ -40,3 +40,16 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.required 
+{
+
+}
+.required:after 
+{
+    content: "*";
+    color: #c00;
+    font-weight: bold;
+    font-size: larger;
+    margin-left: 2px;
+}

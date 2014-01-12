@@ -1,6 +1,7 @@
 ﻿using Model.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,8 +19,8 @@ namespace Web.Controllers
 
             var cred = new LoginCredentials
             {
-                Username = "a",
-                Password = "b"
+                Username = string.Empty,
+                Password = string.Empty
             };
 
             return View(cred);
@@ -30,16 +31,25 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user_id = _service.Auth(cred.Username, cred.Password);
-
-                if (user_id != -1)
+                try
                 {
-                    Session.Add("user_id", user_id);
-                    Session.Add("user_name", _service.GetUserName(user_id));
-                    return RedirectToAction("", "");
+                    var user_id = _service.Auth(cred.Username, cred.Password);
+
+                    if (user_id != -1)
+                    {
+                        Session.Add("user_id", user_id);
+                        Session.Add("user_name", _service.GetUserName(user_id));
+                        return RedirectToAction("", "");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.ToString());
+                    Debug.WriteLine(e.ToString());
+
+                    AddErrorMessage(e);
                 }
             }
-
             return View(cred);
         }
 

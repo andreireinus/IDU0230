@@ -12,15 +12,10 @@ namespace Model
 {
     public class DataContext : DbContext
     {
-        public DbSet<Model.Tables.Osapool> Osapooled { get; set; }
-        public DbSet<Model.Tables.Organisatsioon> Organisatsioonid { get; set; }
-        public DbSet<Model.Tables.Isik> Isikud { get; set; }
         public DbSet<Model.Tables.Ariklient> Arikliendid { get; set; }
         public DbSet<Model.Tables.Eraklient> Erakliendid { get; set; }
         public DbSet<Model.Tables.Tootaja> Tootajad { get; set; }
         public DbSet<Model.Tables.Projekt> Projektid { get; set; }
-        public DbSet<Model.Tables.Klient> Kliendid { get; set; }
-        public DbSet<Model.Tables.ProjektiLiige> ProjektiLiikmed { get; set; }
         public DbSet<Model.Tables.Tooaeg> Tooajad { get; set; }
 
         public DataContext()
@@ -36,7 +31,6 @@ namespace Model
                             in Tooajad
                         where
                             tooaeg.tooaeg_id == tooaeg_id
-                        // && tooaeg.ProjektiLiige.tootaja_id == user_id
                         select tooaeg;
 
             return query.AsNoTracking().FirstOrDefault();
@@ -65,10 +59,10 @@ namespace Model
             return Database.SqlQuery<Tooaeg>("SELECT * FROM fn_tooaegadeKoguNimekiri(:user_id)", param.ToArray()).ToList();
         }
 
-        public int Auth(string username, string password)
+        public int Auth(string username, string passwordHash)
         {
             ParameterList paramList = new ParameterList();
-            paramList.Add("password", password);
+            paramList.Add("password", passwordHash);
             paramList.Add("username", username);
 
             var data = Database.SqlQuery<int>("SELECT * FROM fn_valideeriKasutaja(:username,:password)", paramList.ToArray());
@@ -87,6 +81,7 @@ namespace Model
             return Database.SqlQuery<int>("SELECT * FROM fn_lisaTooaeg(:p1,:p2,:p3,:p4)", pl.ToArray()).First();
         }
 
+        private Type voidType = typeof(object);
         public void UpdateTooaeg(int tooaeg_id, DateTime algus, DateTime lopp, string kirjeldus)
         {
             ParameterList pl = new ParameterList();
@@ -95,7 +90,7 @@ namespace Model
             pl.Add(":p3", lopp);
             pl.Add(":p4", kirjeldus);
 
-            Database.SqlQuery<bool>("SELECT fn_uuendaTooaeg(:p1,:p2,:p3,:p4)", pl.ToArray()).ToList();
+            Database.SqlQuery<object>("SELECT fn_uuendaTooaeg(:p1,:p2,:p3,:p4)", pl.ToArray()).ToList();
         }
 
 
@@ -104,7 +99,7 @@ namespace Model
             ParameterList pl = new ParameterList();
             pl.Add(":p1", id);
 
-            Database.SqlQuery<bool>("SELECT fn_kustutaTooaeg(:p1)", pl.ToArray()).ToList();
+            Database.SqlQuery<object>("SELECT fn_kustutaTooaeg(:p1)", pl.ToArray()).ToList();
         }
 
         public void KinnitaTooaeg(int tooaeg_id)
@@ -112,8 +107,8 @@ namespace Model
             ParameterList pl = new ParameterList();
             pl.Add(":p1", tooaeg_id);
 
-            Database.SqlQuery<bool>("SELECT fn_kinnitaTooaeg(:p1)", pl.ToArray()).ToList();
-        
+            Database.SqlQuery<object>("SELECT fn_kinnitaTooaeg(:p1)", pl.ToArray()).ToList();
+
         }
 
         public string GetProjektiNimi(Tables.Tooaeg tooaeg)

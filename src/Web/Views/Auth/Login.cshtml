@@ -1,7 +1,7 @@
 ﻿@model Model.Views.LoginCredentials
 @{
     Layout = "~/Views/Shared/_LayoutLogin.cshtml";
-    ViewBag.Title = "Logi Sisse";
+    ViewBag.Title = "Autoriseeri";
 }
 
 <style>
@@ -54,6 +54,7 @@
 </style>
 
 
+@Html.ShowErrorMessages()
 
 @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "form-signin" }))
 {

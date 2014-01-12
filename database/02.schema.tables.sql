@@ -183,8 +183,14 @@ CREATE TABLE tooaeg
 
 	CONSTRAINT PK_Tooaeg PRIMARY KEY (tooaeg_id),
 	CONSTRAINT chk_Tooaeg__Algus_enne_loppu CHECK (Algus < Lopp),
-	CONSTRAINT chk_Tooaeg__Lopp_tulevikus CHECK (Lopp <= now()),
+	CONSTRAINT chk_Tooaeg__Lopp_tulevikus CHECK (Lopp <= localtimestamp(0)),
 	CONSTRAINT chk_Tooaeg__Kirjeldus_ei_koosne_tyhikutest CHECK (Kirjeldus!~'^[[:space:]]*$'),
+	CONSTRAINT chk_Tooaeg__AjadEiKattu EXCLUDE USING GIST (
+		box(
+			point( projekti_liige_id, extract(epoch FROM algus) ),
+			point( projekti_liige_id, extract(epoch FROM lopp) )
+		) WITH &&
+	),
 	CONSTRAINT FK_Tooaeg__Projekti_Liige
 		FOREIGN KEY (Projekti_Liige_ID)
 		REFERENCES Projekti_Liige
